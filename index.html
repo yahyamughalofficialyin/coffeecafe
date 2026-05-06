@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description"
+    content="Luxury coffee atelier. Single-origin micro-lots. Master Roaster curated experiences.">
+  <title>GRABB | Coffee Atelier — Luxury Coffee Experience</title>
+
+  <!-- Premium Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,200;14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap"
+    rel="stylesheet">
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0A0806;
+      color: #EAE5DE;
+      overflow-x: hidden;
+    }
+
+    /* Premium Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #1A1715;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #C6A06C;
+      border-radius: 3px;
+    }
+
+    /* Custom Cursor Premium - hidden on touch devices for better UX */
+    @media (pointer: fine) {
+      .cursor {
+        width: 40px;
+        height: 40px;
+        border: 1.5px solid #C6A06C;
+        border-radius: 50%;
+        position: fixed;
+        pointer-events: none;
+        z-index: 10000;
+        transition: 0.15s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        transform: translate(-50%, -50%);
+      }
+
+      .cursor-dot {
+        width: 6px;
+        height: 6px;
+        background: #C6A06C;
+        border-radius: 50%;
+        position: fixed;
+        pointer-events: none;
+        z-index: 10001;
+        transition: 0.08s linear;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    /* Loading Animation */
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0A0806;
+      z-index: 100000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 1.2s cubic-bezier(0.77, 0, 0.18, 1);
+    }
+
+    .loader-content {
+      text-align: center;
+    }
+
+    .loader-circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, #C6A06C, #8B5E3C, #C6A06C);
+      animation: rotateLoader 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+      margin: 0 auto 30px;
+    }
+
+    @keyframes rotateLoader {
+      0% {
+        transform: rotate(0deg) scale(1);
+        opacity: 0.3;
+      }
+
+      50% {
+        transform: rotate(180deg) scale(1.2);
+        opacity: 1;
+      }
+
+      100% {
+        transform: rotate(360deg) scale(1);
+        opacity: 0.3;
+      }
+    }
+
+    .loader-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      letter-spacing: 6px;
+      color: #C6A06C;
+      text-transform: uppercase;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 1.8rem 5%;
+      z-index: 1000;
+      transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .navbar.scrolled {
+      padding: 1rem 5%;
+      background: rgba(10, 8, 6, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(198, 160, 108, 0.2);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: #EAE5DE;
+      text-decoration: none;
+      position: relative;
+    }
+
+    .logo::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: #C6A06C;
+      transition: width 0.4s ease;
+    }
+
+    .logo:hover::after {
+      width: 100%;
+    }
+
+    /* Desktop Navigation */
+    .nav-links {
+      display: flex;
+      gap: 3.5rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: #EAE5DE;
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: 0.3s;
+      position: relative;
+    }
+
+    .nav-links a::before {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      width: 0;
+      height: 1px;
+      background: #C6A06C;
+      transition: 0.3s;
+      transform: translateX(-50%);
+    }
+
+    .nav-links a:hover::before {
+      width: 80%;
+    }
+
+    /* ===== HAMBURGER MENU (Mobile) ===== */
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      z-index: 1002;
+      position: relative;
+      width: 30px;
+      height: 22px;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: #EAE5DE;
+      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      border-radius: 2px;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: translateY(10px) rotate(45deg);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: translateY(-10px) rotate(-45deg);
+    }
+
+    /* Side Menu (Slide from Left) */
+    .side-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 85%;
+      max-width: 320px;
+      height: 100vh;
+      background: #0A0806;
+      backdrop-filter: blur(20px);
+      background: linear-gradient(135deg, #0C0A09 0%, #0A0806 100%);
+      z-index: 1003;
+      transform: translateX(-100%);
+      transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+      box-shadow: 2px 0 20px rgba(0, 0, 0, 0.5);
+      border-right: 1px solid rgba(198, 160, 108, 0.3);
+      padding: 2rem 1.5rem;
+      overflow-y: auto;
+    }
+
+    .side-menu.open {
+      transform: translateX(0);
+    }
+
+    .menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 1002;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+
+    .menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .side-menu-header {
+      margin-bottom: 3rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(198, 160, 108, 0.2);
+    }
+
+    .side-menu-header .logo-sm {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: #C6A06C;
+      letter-spacing: -0.02em;
+    }
+
+    .side-menu-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+
+    .side-menu-links a {
+      color: #EAE5DE;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: 0.3s;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid transparent;
+      display: inline-block;
+    }
+
+    .side-menu-links a:hover {
+      color: #C6A06C;
+      transform: translateX(8px);
+      border-bottom-color: rgba(198, 160, 108, 0.5);
+    }
+
+    .side-menu-footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(198, 160, 108, 0.2);
+      font-size: 0.8rem;
+      color: #9E968D;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 1.2rem;
+      margin-top: 1rem;
+    }
+
+    .social-icons i {
+      font-size: 1.2rem;
+      color: #C6A06C;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    .social-icons i:hover {
+      transform: scale(1.1);
+      color: #EAE5DE;
+    }
+
+    /* Hero Section with Video Background */
+    .hero {
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(10, 8, 6, 0.75) 0%, rgba(10, 8, 6, 0.4) 100%);
+      z-index: 1;
+    }
+
+    /* Floating Coffee Elements */
+    .floating-elements {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .floating-bean,
+    .floating-steam,
+    .floating-leaf {
+      position: absolute;
+      opacity: 0.3;
+      animation: floatAround 20s infinite ease-in-out;
+    }
+
+    @keyframes floatAround {
+
+      0%,
+      100% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0.2;
+      }
+
+      50% {
+        transform: translateY(-40px) rotate(10deg);
+        opacity: 0.5;
+      }
+    }
+
+    .hero-content {
+      position: absolute;
+      bottom: 15%;
+      left: 0;
+      right: 0;
+      text-align: center;
+      z-index: 3;
+      padding: 0 1rem;
+    }
+
+    .hero-badge {
+      font-size: 0.7rem;
+      letter-spacing: 6px;
+      color: #C6A06C;
+      margin-bottom: 1.5rem;
+      font-weight: 300;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 7rem;
+      font-weight: 500;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #EAE5DE 0%, #C6A06C 40%, #EAE5DE 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shimmer 4s infinite;
+      background-size: 200% auto;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -200% 0;
+      }
+
+      100% {
+        background-position: 200% 0;
+      }
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+      font-weight: 300;
+      letter-spacing: 2px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary,
+    .btn-outline {
+      padding: 1rem 2.5rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+      border: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: #C6A06C;
+      color: #0A0806;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: #EAE5DE;
+      transition: 0.5s;
+    }
+
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 40px rgba(198, 160, 108, 0.3);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid rgba(198, 160, 108, 0.5);
+      color: #EAE5DE;
+    }
+
+    .btn-outline:hover {
+      border-color: #C6A06C;
+      background: rgba(198, 160, 108, 0.1);
+      transform: translateY(-3px);
+    }
+
+    /* Section Styles */
+    section {
+      padding: 8rem 5%;
+      position: relative;
+    }
+
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      text-align: center;
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      color: #C6A06C;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      font-weight: 500;
+      margin-bottom: 4rem;
+      letter-spacing: -0.02em;
+    }
+
+    /* Background Coffee Pattern for Sections */
+    .coffee-bg-pattern {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23C6A06C" opacity="0.03" d="M20,40 Q30,30 40,40 T60,40 T80,40 M25,60 Q35,50 45,60 T65,60 T85,60 M50,20 Q55,15 60,20 T70,20"/><circle cx="30" cy="30" r="2" fill="%23C6A06C" opacity="0.04"/><circle cx="70" cy="70" r="3" fill="%23C6A06C" opacity="0.04"/></svg>');
+      background-repeat: repeat;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Product Grid */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .product-card {
+      position: relative;
+      background: #12100E;
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+      cursor: pointer;
+    }
+
+    .product-card:hover {
+      transform: translateY(-15px);
+      box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .card-inner {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 450px;
+      object-fit: cover;
+      transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .product-card:hover .product-image {
+      transform: scale(1.05);
+    }
+
+    .product-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(198, 160, 108, 0.95) 0%, rgba(198, 160, 108, 0.85) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: 0.5s;
+    }
+
+    .product-card:hover .product-overlay {
+      opacity: 1;
+    }
+
+    .quick-view {
+      background: #0A0806;
+      color: #C6A06C;
+      padding: 0.8rem 2rem;
+      border: none;
+      cursor: pointer;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: 0.3s;
+    }
+
+    .quick-view:hover {
+      background: #EAE5DE;
+      color: #0A0806;
+    }
+
+    .product-info {
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .product-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .product-price {
+      color: #C6A06C;
+      font-size: 1.1rem;
+      margin-top: 0.5rem;
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      margin-top: 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .feature {
+      text-align: center;
+      padding: 2rem;
+      background: rgba(18, 16, 14, 0.8);
+      backdrop-filter: blur(10px);
+      transition: 0.5s;
+      border: 1px solid rgba(198, 160, 108, 0.1);
+    }
+
+    .feature:hover {
+      transform: translateY(-8px);
+      background: #1A1715;
+      border-color: rgba(198, 160, 108, 0.3);
+    }
+
+    .feature i {
+      font-size: 2.5rem;
+      color: #C6A06C;
+      margin-bottom: 1rem;
+    }
+
+    /* Split Layout */
+    .split-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .split-content {
+      padding-right: 2rem;
+    }
+
+    .split-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .split-text {
+      line-height: 1.8;
+      color: #9E968D;
+      margin-bottom: 2rem;
+    }
+
+    .split-image {
+      height: 600px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .split-image::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(198, 160, 108, 0.2) 0%, transparent 100%);
+    }
+
+    /* Testimonials Grid */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .testimonial-card {
+      background: rgba(18, 16, 14, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      text-align: center;
+      border: 1px solid rgba(198, 160, 108, 0.1);
+      transition: 0.4s;
+    }
+
+    .testimonial-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(198, 160, 108, 0.3);
+    }
+
+    /* Instagram Grid */
+    .insta-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: #1A1715;
+      position: relative;
+      z-index: 2;
+    }
+
+    .insta-item {
+      position: relative;
+      aspect-ratio: 1;
+      overflow: hidden;
+    }
+
+    .insta-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: 0.8s;
+    }
+
+    .insta-item:hover img {
+      transform: scale(1.1);
+    }
+
+    .insta-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(198, 160, 108, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: 0.4s;
+    }
+
+    .insta-item:hover .insta-overlay {
+      opacity: 1;
+    }
+
+    /* Newsletter */
+    .newsletter-card {
+      background: linear-gradient(135deg, #12100E 0%, #1A1715 100%);
+      padding: 4rem;
+      text-align: center;
+      border: 1px solid rgba(198, 160, 108, 0.2);
+      position: relative;
+      z-index: 2;
+    }
+
+    .newsletter-form {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .newsletter-form input {
+      flex: 1;
+      padding: 1rem;
+      background: #0A0806;
+      border: 1px solid rgba(198, 160, 108, 0.3);
+      color: #EAE5DE;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Footer */
+    .footer {
+      background: #060505;
+      padding: 4rem 5% 2rem;
+      border-top: 1px solid rgba(198, 160, 108, 0.1);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.96);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      max-width: 500px;
+      width: 90%;
+      background: #12100E;
+      padding: 2rem;
+      position: relative;
+      border: 1px solid rgba(198, 160, 108, 0.3);
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .split-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .testimonials-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 4rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .insta-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="loader" id="loader">
+    <div class="loader-content">
+      <div class="loader-circle"></div>
+      <div class="loader-text">GRABB ATELIER</div>
+    </div>
+  </div>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="logo">GRABB</a>
+      <div class="nav-links">
+        <a href="index.html">HOME</a>
+        <a href="shop.html">SHOP</a>
+        <a href="about.html">ABOUT US</a>
+        <a href="contact.html">CONTACT</a>
+      </div>
+      <!-- Hamburger Button for Mobile -->
+      <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Side Menu Panel (slides from left) -->
+  <div class="side-menu" id="sideMenu">
+    <div class="side-menu-header">
+      <div class="logo-sm">GRABB</div>
+      <p style="font-size: 0.7rem; letter-spacing: 2px; margin-top: 0.5rem;">COFFEE ATELIER</p>
+    </div>
+    <div class="side-menu-links">
+      <a href="index.html">HOME</a>
+      <a href="shop.html">SHOP</a>
+      <a href="about.html">ABOUT US</a>
+      <a href="contact.html">CONTACT</a>
+    </div>
+    <div class="side-menu-footer">
+      <p>CONNECT WITH US</p>
+      <div class="social-icons">
+        <i class="fab fa-instagram"></i>
+        <i class="fab fa-twitter"></i>
+        <i class="fab fa-facebook-f"></i>
+      </div>
+    </div>
+  </div>
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <main>
+    <!-- Hero Section with Video + Coffee Floating Elements -->
+    <section class="hero" id="home">
+      <video autoplay muted loop playsinline class="hero-video">
+        <source src="https://www.pexels.com/download/video/20767025/" type="video/mp4">
+      </video>
+      <div class="hero-overlay"></div>
+
+      <!-- Floating Coffee Elements -->
+      <div class="floating-elements">
+        <div class="floating-bean" style="top: 15%; left: 5%; animation-duration: 18s;">
+          <i class="fas fa-coffee-bean" style="font-size: 48px; color: #C6A06C;"></i>
+        </div>
+        <div class="floating-steam" style="top: 25%; right: 8%; animation-duration: 22s;">
+          <i class="fas fa-wind" style="font-size: 36px; color: rgba(198,160,108,0.4);"></i>
+        </div>
+        <div class="floating-leaf" style="bottom: 20%; left: 10%; animation-duration: 25s;">
+          <i class="fas fa-leaf" style="font-size: 40px; color: #C6A06C;"></i>
+        </div>
+        <div class="floating-bean" style="bottom: 30%; right: 12%; animation-duration: 20s;">
+          <i class="fas fa-mug-hot" style="font-size: 44px; color: rgba(198,160,108,0.5);"></i>
+        </div>
+        <div class="floating-steam" style="top: 45%; left: 15%; animation-duration: 28s;">
+          <i class="fas fa-cloud" style="font-size: 32px; color: rgba(198,160,108,0.3);"></i>
+        </div>
+      </div>
+
+      <div class="hero-content">
+        <div class="hero-badge">EST. MCMXCIV · MASTER ROASTER</div>
+        <h1>The Art of<br>Slow Coffee</h1>
+        <div class="hero-subtitle">Single-origin micro-lots · Aged oak barrels · 30-day fermentation</div>
+        <div class="hero-buttons">
+          <button class="btn-primary" onclick="alert('Curated tasting experience')">BOOK A TASTING</button>
+          <button class="btn-outline"
+            onclick="document.getElementById('collection').scrollIntoView({behavior:'smooth'})">DISCOVER MENU</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Collection -->
+    <section id="collection" style="position: relative;">
+      <div class="coffee-bg-pattern"></div>
+      <div class="container">
+        <div class="section-label">THE ATELIER COLLECTION</div>
+        <h2 class="section-title">Signature Roasts</h2>
+        <div class="product-grid" id="productGrid"></div>
+      </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section style="background: #12100E; position: relative;">
+      <div class="coffee-bg-pattern"></div>
+      <div class="container">
+        <div class="section-label">UNCOMPROMISING CRAFT</div>
+        <h2 class="section-title">The GRABB Standard</h2>
+        <div class="features-grid" id="featuresGrid"></div>
+      </div>
+    </section>
+
+    <!-- Story Section -->
+    <section id="philosophy" style="position: relative;">
+      <div class="coffee-bg-pattern"></div>
+      <div class="container">
+        <div class="split-layout">
+          <div class="split-content">
+            <div class="section-label" style="text-align: left;">OUR PHILOSOPHY</div>
+            <h2 class="split-title">Time. Terroir. Tradition.</h2>
+            <p class="split-text">For three decades, GRABB has pursued an uncompromising vision: to honor coffee as a
+              living art form. Our beans journey from volcanic highlands to our Brussels atelier, where they undergo a
+              30-day oak barrel fermentation—a process that unlocks unprecedented depth and complexity. Each batch is
+              roasted by a single master, guided by intuition refined over 10,000 roasts. The result is not merely
+              coffee, but a meditation in a cup.</p>
+            <button class="btn-primary" style="background: #C6A06C;">READ THE MANIFESTO</button>
+          </div>
+          <div class="split-image"
+            style="background-image: url('https://images.pexels.com/photos/33152970/pexels-photo-33152970.jpeg');">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Customer Reviews -->
+    <section style="background: #0C0A09; position: relative;">
+      <div class="coffee-bg-pattern"></div>
+      <div class="container">
+        <div class="section-label">CONNOISSEUR VOICES</div>
+        <h2 class="section-title">The Verdict</h2>
+        <div class="testimonials-grid" id="testimonialGrid"></div>
+      </div>
+    </section>
+
+    <!-- Instagram Feed -->
+    <section id="journal" style="padding-bottom: 4rem;">
+      <div class="container">
+        <div class="section-label">@GRABBATELIER</div>
+        <h2 class="section-title">The Ritual. Captured.</h2>
+      </div>
+      <div class="insta-grid" id="instaGrid"></div>
+    </section>
+
+    <!-- Newsletter -->
+    <section style="position: relative;">
+      <div class="coffee-bg-pattern"></div>
+      <div class="container">
+        <div class="newsletter-card">
+          <h3 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 1rem;">Join the Inner
+            Circle</h3>
+          <p>Receive 15% off your inaugural order + access to limited batch releases</p>
+          <div class="newsletter-form">
+            <input type="email" placeholder="Your email address">
+            <button class="btn-primary">SUBSCRIBE</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.3rem;">GRABB</h4>
+        <p>Coffee Atelier</p>
+        <p>Since 1994</p>
+      </div>
+      <div class="footer-col">
+        <h4>EXPLORE</h4>
+        <p>Coffee</p>
+        <p>Equipment</p>
+        <p>Subscriptions</p>
+        <p>Atelier Visits</p>
+      </div>
+      <div class="footer-col">
+        <h4>CONTACT</h4>
+        <p>hello@GRABB.com</p>
+        <p>+32 (0)2 555 0890</p>
+        <p>Brussels · Tokyo · NYC</p>
+      </div>
+      <div class="footer-col">
+        <h4>FOLLOW</h4>
+        <div style="display: flex; gap: 1rem;">
+          <i class="fab fa-instagram"></i>
+          <i class="fab fa-twitter"></i>
+          <i class="fab fa-facebook-f"></i>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span style="position: absolute; top: 1rem; right: 1.5rem; font-size: 2rem; cursor: pointer; color: #C6A06C;"
+        id="closeModal">&times;</span>
+      <h3 id="modalName" style="font-family: 'Playfair Display', serif; margin-bottom: 1rem;"></h3>
+      <img id="modalImg" width="100%" style="margin-bottom: 1rem;">
+      <p id="modalDesc" style="color: #9E968D;"></p>
+      <button class="btn-primary" style="width: 100%; margin-top: 1rem;">ADD TO CART — <span
+          id="modalPrice"></span></button>
+    </div>
+  </div>
+
+  <script>
+    // Data
+    const products = [
+      { name: "Yirgacheffe G1", price: "$48", desc: "Jasmine, bergamot, honey. Washed process. Altitude: 1900-2100m", img: "https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?auto=compress&cs=tinysrgb&w=800" },
+      { name: "Geisha 2024", price: "$128", desc: "Tropical fruit, jasmine, silky. Natural process. Limited release.", img: "https://images.pexels.com/photos/20011903/pexels-photo-20011903.jpeg" },
+      { name: "Aged Sumatra", price: "$68", desc: "Earthy, dark chocolate, tobacco. 5-year aged green beans.", img: "https://images.pexels.com/photos/2396220/pexels-photo-2396220.jpeg?auto=compress&cs=tinysrgb&w=800" }
+    ];
+
+    const features = [
+      { icon: "fas fa-seedling", title: "Direct Trade", desc: "Partnering with 12 family farms" },
+      { icon: "fas fa-fire", title: "Oak Barrel Aged", desc: "30-day fermentation process" },
+      { icon: "fas fa-certificate", title: "Master Roaster", desc: "SQF Level 3 certified" },
+      { icon: "fas fa-globe", title: "Carbon Negative", desc: "Planting 2 trees per bag" }
+    ];
+
+    const testimonials = [
+      { text: "The most extraordinary coffee I've encountered in 20 years. A revelation in every cup.", name: "James Hoffman", role: "World Barista Champion" },
+      { text: "GRABB has elevated coffee to an art form. The depth and complexity are unmatched.", name: "Caroline Shay", role: "Michelin Star Sommelier" },
+      { text: "Each batch tells a story of place and patience. Simply transcendent.", name: "Marcus W.", role: "Coffee Buyer, Blue Bottle" }
+    ];
+
+    const instaImages = [
+      "https://images.pexels.com/photos/29849772/pexels-photo-29849772.jpeg",
+      "https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "https://images.pexels.com/photos/8488379/pexels-photo-8488379.jpeg",
+      "https://images.pexels.com/photos/2396220/pexels-photo-2396220.jpeg?auto=compress&cs=tinysrgb&w=600"
+    ];
+
+    // Render functions
+    function renderProducts() {
+      const grid = document.getElementById('productGrid');
+      grid.innerHTML = products.map(p => `
+      <div class="product-card">
+        <div class="card-inner">
+          <img class="product-image" src="${p.img}" alt="${p.name}" loading="lazy">
+          <div class="product-overlay">
+            <button class="quick-view" onclick="openModal('${p.name}', '${p.img}', '${p.desc}', '${p.price}')">QUICK VIEW</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">${p.name}</div>
+          <div class="product-price">${p.price}</div>
+        </div>
+      </div>
+    `).join('');
+    }
+
+    function renderFeatures() {
+      const grid = document.getElementById('featuresGrid');
+      grid.innerHTML = features.map(f => `
+      <div class="feature">
+        <i class="${f.icon}"></i>
+        <h3 style="margin-bottom: 0.5rem; font-family: 'Playfair Display', serif;">${f.title}</h3>
+        <p style="color: #9E968D; font-size: 0.9rem;">${f.desc}</p>
+      </div>
+    `).join('');
+    }
+
+    function renderTestimonials() {
+      const grid = document.getElementById('testimonialGrid');
+      grid.innerHTML = testimonials.map(t => `
+      <div class="testimonial-card">
+        <i class="fas fa-quote-left" style="color: #C6A06C; font-size: 2rem; margin-bottom: 1rem; display: block;"></i>
+        <p style="line-height: 1.6; margin-bottom: 1rem;">"${t.text}"</p>
+        <h4 style="font-family: 'Playfair Display', serif;">${t.name}</h4>
+        <p style="font-size: 0.8rem; color: #C6A06C;">${t.role}</p>
+      </div>
+    `).join('');
+    }
+
+    function renderInstagram() {
+      const grid = document.getElementById('instaGrid');
+      grid.innerHTML = instaImages.map(img => `
+      <div class="insta-item">
+        <img src="${img}" alt="Instagram" loading="lazy">
+        <div class="insta-overlay">
+          <i class="fab fa-instagram" style="font-size: 2rem;"></i>
+        </div>
+      </div>
+    `).join('');
+    }
+
+    // Modal
+    function openModal(name, img, desc, price) {
+      document.getElementById('modalName').innerText = name;
+      document.getElementById('modalImg').src = img;
+      document.getElementById('modalDesc').innerText = desc;
+      document.getElementById('modalPrice').innerText = price;
+      document.getElementById('modal').style.display = 'flex';
+    }
+
+    window.openModal = openModal;
+    document.getElementById('closeModal').onclick = () => document.getElementById('modal').style.display = 'none';
+    window.onclick = (e) => { if (e.target === document.getElementById('modal')) document.getElementById('modal').style.display = 'none'; };
+
+    // Navbar scroll
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) navbar.classList.add('scrolled');
+      else navbar.classList.remove('scrolled');
+    });
+
+    // Cursor (only on non-touch devices)
+    if (window.matchMedia("(pointer: fine)").matches) {
+      const cursor = document.getElementById('cursor');
+      const cursorDot = document.getElementById('cursorDot');
+      document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+        cursorDot.style.left = e.clientX + 'px';
+        cursorDot.style.top = e.clientY + 'px';
+      });
+    } else {
+      // Hide custom cursors on touch devices
+      const cursorEl = document.getElementById('cursor');
+      const cursorDotEl = document.getElementById('cursorDot');
+      if (cursorEl) cursorEl.style.display = 'none';
+      if (cursorDotEl) cursorDotEl.style.display = 'none';
+    }
+
+    // Hide loader
+    setTimeout(() => {
+      const loader = document.getElementById('loader');
+      loader.style.opacity = '0';
+      setTimeout(() => loader.style.display = 'none', 800);
+    }, 1500);
+
+    // Side Menu Toggle Logic
+    const hamburger = document.getElementById('hamburgerBtn');
+    const sideMenu = document.getElementById('sideMenu');
+    const overlay = document.getElementById('menuOverlay');
+
+    function openMenu() {
+      sideMenu.classList.add('open');
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      hamburger.classList.add('active');
+    }
+
+    function closeMenu() {
+      sideMenu.classList.remove('open');
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+      hamburger.classList.remove('active');
+    }
+
+    function toggleMenu() {
+      if (sideMenu.classList.contains('open')) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    }
+
+    hamburger.addEventListener('click', toggleMenu);
+    overlay.addEventListener('click', closeMenu);
+
+    // Close menu on link click for smooth UX
+    document.querySelectorAll('.side-menu-links a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        closeMenu();
+      });
+    });
+
+    // Initialize
+    renderProducts();
+    renderFeatures();
+    renderTestimonials();
+    renderInstagram();
+  </script>
+</body>
+
+</html>

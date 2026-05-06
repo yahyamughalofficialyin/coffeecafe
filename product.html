@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description"
+    content="Single-origin micro-lot coffee. Master Roaster curated. Free shipping on orders $75+">
+  <title>NOIR | Coffee Atelier — Premium Single-Origin Coffee</title>
+
+  <!-- Premium Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,200;14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap"
+    rel="stylesheet">
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0A0806;
+      color: #EAE5DE;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #1A1715;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #C6A06C;
+      border-radius: 3px;
+    }
+
+    @media (pointer: fine) {
+      .cursor {
+        width: 40px;
+        height: 40px;
+        border: 1.5px solid #C6A06C;
+        border-radius: 50%;
+        position: fixed;
+        pointer-events: none;
+        z-index: 10000;
+        transition: 0.15s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        transform: translate(-50%, -50%);
+      }
+
+      .cursor-dot {
+        width: 6px;
+        height: 6px;
+        background: #C6A06C;
+        border-radius: 50%;
+        position: fixed;
+        pointer-events: none;
+        z-index: 10001;
+        transition: 0.08s linear;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0A0806;
+      z-index: 100000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 1.2s cubic-bezier(0.77, 0, 0.18, 1);
+    }
+
+    .loader-content {
+      text-align: center;
+    }
+
+    .loader-circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, #C6A06C, #8B5E3C, #C6A06C);
+      animation: rotateLoader 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+      margin: 0 auto 30px;
+    }
+
+    @keyframes rotateLoader {
+      0% {
+        transform: rotate(0deg) scale(1);
+        opacity: 0.3;
+      }
+
+      50% {
+        transform: rotate(180deg) scale(1.2);
+        opacity: 1;
+      }
+
+      100% {
+        transform: rotate(360deg) scale(1);
+        opacity: 0.3;
+      }
+    }
+
+    .loader-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      letter-spacing: 6px;
+      color: #C6A06C;
+      text-transform: uppercase;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 1.8rem 5%;
+      z-index: 1000;
+      transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .navbar.scrolled {
+      padding: 1rem 5%;
+      background: rgba(10, 8, 6, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(198, 160, 108, 0.2);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: #EAE5DE;
+      text-decoration: none;
+      position: relative;
+    }
+
+    .logo::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: #C6A06C;
+      transition: width 0.4s ease;
+    }
+
+    .logo:hover::after {
+      width: 100%;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 3.5rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: #EAE5DE;
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: 0.3s;
+      position: relative;
+    }
+
+    .nav-links a::before {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      width: 0;
+      height: 1px;
+      background: #C6A06C;
+      transition: 0.3s;
+      transform: translateX(-50%);
+    }
+
+    .nav-links a:hover::before {
+      width: 80%;
+    }
+
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      z-index: 1002;
+      position: relative;
+      width: 30px;
+      height: 22px;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: #EAE5DE;
+      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      border-radius: 2px;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: translateY(10px) rotate(45deg);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: translateY(-10px) rotate(-45deg);
+    }
+
+    .side-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 85%;
+      max-width: 320px;
+      height: 100vh;
+      background: #0A0806;
+      backdrop-filter: blur(20px);
+      background: linear-gradient(135deg, #0C0A09 0%, #0A0806 100%);
+      z-index: 1003;
+      transform: translateX(-100%);
+      transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+      box-shadow: 2px 0 20px rgba(0, 0, 0, 0.5);
+      border-right: 1px solid rgba(198, 160, 108, 0.3);
+      padding: 2rem 1.5rem;
+      overflow-y: auto;
+    }
+
+    .side-menu.open {
+      transform: translateX(0);
+    }
+
+    .menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 1002;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+
+    .menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .side-menu-header {
+      margin-bottom: 3rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(198, 160, 108, 0.2);
+    }
+
+    .side-menu-header .logo-sm {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: #C6A06C;
+      letter-spacing: -0.02em;
+    }
+
+    .side-menu-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+
+    .side-menu-links a {
+      color: #EAE5DE;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: 0.3s;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid transparent;
+      display: inline-block;
+    }
+
+    .side-menu-links a:hover {
+      color: #C6A06C;
+      transform: translateX(8px);
+      border-bottom-color: rgba(198, 160, 108, 0.5);
+    }
+
+    .side-menu-footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(198, 160, 108, 0.2);
+      font-size: 0.8rem;
+      color: #9E968D;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 1.2rem;
+      margin-top: 1rem;
+    }
+
+    .social-icons i {
+      font-size: 1.2rem;
+      color: #C6A06C;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    .social-icons i:hover {
+      transform: scale(1.1);
+      color: #EAE5DE;
+    }
+
+    .breadcrumb {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 8rem 5% 1rem;
+      font-size: 0.75rem;
+    }
+
+    .breadcrumb a {
+      color: #C6A06C;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .breadcrumb a:hover {
+      color: #EAE5DE;
+    }
+
+    .breadcrumb span {
+      color: #9E968D;
+    }
+
+    .product-container {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 2rem 5%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .product-gallery {
+      position: sticky;
+      top: 100px;
+    }
+
+    .main-image-container {
+      background: #12100E;
+      border: 1px solid rgba(198, 160, 108, 0.2);
+      margin-bottom: 1rem;
+      cursor: zoom-in;
+    }
+
+    .main-image {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      transition: 0.3s;
+    }
+
+    .thumbnail-row {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .thumbnail {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      cursor: pointer;
+      border: 2px solid transparent;
+      opacity: 0.7;
+      transition: 0.2s;
+    }
+
+    .thumbnail.active {
+      border-color: #C6A06C;
+      opacity: 1;
+    }
+
+    .thumbnail:hover {
+      opacity: 1;
+    }
+
+    .product-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .brand {
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      color: #C6A06C;
+      text-transform: uppercase;
+    }
+
+    .product-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .rating {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .stars {
+      color: #C6A06C;
+      font-size: 0.9rem;
+    }
+
+    .review-count {
+      color: #9E968D;
+      font-size: 0.8rem;
+    }
+
+    .price-section {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-top: 1px solid rgba(198, 160, 108, 0.2);
+      border-bottom: 1px solid rgba(198, 160, 108, 0.2);
+    }
+
+    .current-price {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #C6A06C;
+    }
+
+    .original-price {
+      font-size: 1rem;
+      color: #9E968D;
+      text-decoration: line-through;
+    }
+
+    .discount {
+      background: rgba(198, 160, 108, 0.2);
+      color: #C6A06C;
+      padding: 0.2rem 0.6rem;
+      font-size: 0.8rem;
+      border-radius: 4px;
+    }
+
+    .tax-info {
+      font-size: 0.7rem;
+      color: #9E968D;
+    }
+
+    .variant-section {
+      margin: 0.5rem 0;
+    }
+
+    .variant-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .size-options {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .size-btn {
+      background: #12100E;
+      border: 1px solid rgba(198, 160, 108, 0.3);
+      padding: 0.6rem 1.2rem;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 0.8rem;
+    }
+
+    .size-btn:hover,
+    .size-btn.active {
+      border-color: #C6A06C;
+      background: rgba(198, 160, 108, 0.1);
+    }
+
+    .quantity-cart {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      margin: 1rem 0;
+    }
+
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+      border: 1px solid rgba(198, 160, 108, 0.3);
+      background: #12100E;
+    }
+
+    .qty-btn {
+      background: none;
+      border: none;
+      color: #EAE5DE;
+      width: 40px;
+      height: 40px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .qty-btn:hover {
+      color: #C6A06C;
+    }
+
+    .quantity-input {
+      width: 50px;
+      text-align: center;
+      background: transparent;
+      border: none;
+      color: #EAE5DE;
+      font-size: 1rem;
+    }
+
+    .add-to-cart {
+      flex: 1;
+      background: #C6A06C;
+      color: #0A0806;
+      border: none;
+      padding: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: 0.3s;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+
+    .add-to-cart:hover {
+      background: #EAE5DE;
+      transform: translateY(-2px);
+    }
+
+    .buy-now {
+      background: transparent;
+      border: 2px solid #C6A06C;
+      color: #C6A06C;
+      padding: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: 0.3s;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+
+    .buy-now:hover {
+      background: rgba(198, 160, 108, 0.1);
+    }
+
+    .delivery-info {
+      background: #12100E;
+      padding: 1rem;
+      margin: 1rem 0;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .delivery-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+    }
+
+    .delivery-item i {
+      color: #C6A06C;
+    }
+
+    .product-tabs {
+      max-width: 1600px;
+      margin: 3rem auto;
+      padding: 0 5%;
+    }
+
+    .tabs-header {
+      display: flex;
+      gap: 2rem;
+      border-bottom: 1px solid rgba(198, 160, 108, 0.2);
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      color: #9E968D;
+      padding: 1rem 0;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      position: relative;
+    }
+
+    .tab-btn.active {
+      color: #C6A06C;
+    }
+
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #C6A06C;
+    }
+
+    .tab-content {
+      padding: 2rem 0;
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .specs-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .specs-table tr {
+      border-bottom: 1px solid rgba(198, 160, 108, 0.1);
+    }
+
+    .specs-table td {
+      padding: 1rem;
+    }
+
+    .specs-table td:first-child {
+      font-weight: 600;
+      width: 200px;
+    }
+
+    .related-section {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 3rem 5% 5rem;
+    }
+
+    .related-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+    }
+
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+
+    .related-card {
+      background: #12100E;
+      transition: 0.3s;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .related-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .related-img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+    }
+
+    .related-info {
+      padding: 1rem;
+    }
+
+    .related-name {
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .related-price {
+      color: #C6A06C;
+      font-size: 0.9rem;
+    }
+
+    .footer {
+      background: #060505;
+      padding: 4rem 5% 2rem;
+      border-top: 1px solid rgba(198, 160, 108, 0.1);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .footer-col h4 {
+      font-family: 'Playfair Display', serif;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+
+    .footer-col p {
+      font-size: 0.8rem;
+      color: #9E968D;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .footer-col p:hover {
+      color: #C6A06C;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #1A1715;
+      border-left: 4px solid #C6A06C;
+      padding: 1rem 2rem;
+      z-index: 10000;
+      opacity: 0;
+      transition: 0.3s;
+      pointer-events: none;
+    }
+
+    @media (max-width: 1000px) {
+      .product-container {
+        grid-template-columns: 1fr;
+      }
+
+      .product-gallery {
+        position: relative;
+        top: 0;
+      }
+
+      .related-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .related-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .tabs-header {
+        gap: 1rem;
+      }
+
+      .tab-btn {
+        font-size: 0.8rem;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="loader" id="loader">
+    <div class="loader-content">
+      <div class="loader-circle"></div>
+      <div class="loader-text">NOIR ATELIER</div>
+    </div>
+  </div>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">NOIR</a>
+      <div class="nav-links">
+        <a href="index.html">HOME</a>
+        <a href="shop.html">SHOP</a>
+        <a href="about.html">ABOUT US</a>
+        <a href="contact.html">CONTACT</a>
+      </div>
+      <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="side-menu" id="sideMenu">
+    <div class="side-menu-header">
+      <div class="logo-sm">NOIR</div>
+      <p style="font-size: 0.7rem; letter-spacing: 2px; margin-top: 0.5rem;">COFFEE ATELIER</p>
+    </div>
+    <div class="side-menu-links">
+      <a href="index.html">HOME</a>
+      <a href="shop.html">SHOP</a>
+      <a href="about.html">ABOUT US</a>
+      <a href="contact.html">CONTACT</a>
+    </div>
+    <div class="side-menu-footer">
+      <p>CONNECT WITH US</p>
+      <div class="social-icons">
+        <i class="fab fa-instagram"></i>
+        <i class="fab fa-twitter"></i>
+        <i class="fab fa-facebook-f"></i>
+      </div>
+    </div>
+  </div>
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <div class="breadcrumb">
+    <a href="index.html">HOME</a> <span>/</span> <a href="shop.html">SHOP</a> <span>/</span> <span style="color:#C6A06C;" id="breadcrumbProductName">Loading...</span>
+  </div>
+
+  <div class="product-container">
+    <div class="product-gallery">
+      <div class="main-image-container">
+        <img id="mainImage" class="main-image" src="" alt="Product">
+      </div>
+      <div class="thumbnail-row">
+        <img class="thumbnail active" data-img="" src="" alt="Thumb 1">
+        <img class="thumbnail" data-img="https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?auto=compress&cs=tinysrgb&w=1000" src="https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?auto=compress&cs=tinysrgb&w=200" alt="Thumb 2">
+        <img class="thumbnail" data-img="https://images.pexels.com/photos/2396220/pexels-photo-2396220.jpeg?auto=compress&cs=tinysrgb&w=1000" src="https://images.pexels.com/photos/2396220/pexels-photo-2396220.jpeg?auto=compress&cs=tinysrgb&w=200" alt="Thumb 3">
+        <img class="thumbnail" data-img="https://images.pexels.com/photos/1691989/pexels-photo-1691989.jpeg?auto=compress&cs=tinysrgb&w=1000" src="https://images.pexels.com/photos/1691989/pexels-photo-1691989.jpeg?auto=compress&cs=tinysrgb&w=200" alt="Thumb 4">
+      </div>
+    </div>
+
+    <div class="product-info">
+      <div class="brand">NOIR ATELIER · MASTER ROASTER SELECT</div>
+      <h1 class="product-title" id="productTitle">Loading...</h1>
+      <div class="rating">
+        <div class="stars">
+          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+        </div>
+        <span class="review-count">147 reviews</span>
+      </div>
+      <div class="price-section">
+        <span class="current-price" id="currentPrice">$0.00</span>
+        <span class="original-price" id="originalPrice">$0.00</span>
+        <span class="discount" id="discountBadge">-0%</span>
+      </div>
+      <div class="tax-info">Tax included. Free shipping on orders $75+</div>
+
+      <div class="variant-section">
+        <div class="variant-label">WEIGHT</div>
+        <div class="size-options">
+          <div class="size-btn active" data-size="250g" data-price="128">250g · $128</div>
+          <div class="size-btn" data-size="500g" data-price="228">500g · $228</div>
+          <div class="size-btn" data-size="1kg" data-price="418">1kg · $418</div>
+        </div>
+      </div>
+
+      <div class="quantity-cart">
+        <div class="quantity-selector">
+          <button class="qty-btn" id="decrement">−</button>
+          <input type="text" id="quantity" class="quantity-input" value="1" readonly>
+          <button class="qty-btn" id="increment">+</button>
+        </div>
+        <button class="add-to-cart" id="addToCartBtn">ADD TO CART</button>
+        <button class="buy-now" id="buyNowBtn">BUY NOW</button>
+      </div>
+
+      <div class="delivery-info">
+        <div class="delivery-item"><i class="fas fa-truck"></i> Free 2-3 day shipping</div>
+        <div class="delivery-item"><i class="fas fa-undo-alt"></i> 30-day returns</div>
+        <div class="delivery-item"><i class="fas fa-shield-alt"></i> Roasted to order</div>
+      </div>
+
+      <p style="color:#9E968D; font-size:0.85rem; line-height:1.6;" id="productDesc">Loading product information...</p>
+    </div>
+  </div>
+
+  <div class="product-tabs">
+    <div class="tabs-header">
+      <button class="tab-btn active" data-tab="details">Product Details</button>
+      <button class="tab-btn" data-tab="specs">Specifications</button>
+      <button class="tab-btn" data-tab="brewing">Brewing Guide</button>
+      <button class="tab-btn" data-tab="reviews">Reviews (147)</button>
+    </div>
+
+    <div id="details" class="tab-content active">
+      <h3 style="font-family:'Playfair Display'; margin-bottom:1rem;">About This Coffee</h3>
+      <p style="line-height:1.7; color:#9E968D;" id="detailsDesc">Experience the pinnacle of specialty coffee craftsmanship.</p>
+    </div>
+
+    <div id="specs" class="tab-content">
+      <table class="specs-table" id="specsTable">
+        <tr><td>Origin</td><td>Loading...</td></tr>
+        <tr><td>Process</td><td>Loading...</td></tr>
+        <tr><td>Roast Level</td><td>Loading...</td></tr>
+        <tr><td>Varietal</td><td>Geisha / Heirloom</td></tr>
+      </table>
+    </div>
+
+    <div id="brewing" class="tab-content">
+      <h3 style="font-family:'Playfair Display'; margin-bottom:1rem;">Recommended Brewing Method</h3>
+      <p style="line-height:1.7; color:#9E968D;"><strong>V60 / Pour Over:</strong> 15g coffee to 250ml water at 93°C. Bloom with 50ml for 35 seconds, then pour slowly in circles. Total brew time: 2:45 - 3:15.</p>
+      <p style="margin-top:1rem; line-height:1.7; color:#9E968D;"><strong>Espresso:</strong> 18g in, 36g out in 28-32 seconds. Expect vibrant acidity and floral aroma.</p>
+      <p style="margin-top:1rem; line-height:1.7; color:#9E968D;"><strong>French Press:</strong> 16g coffee to 240ml water, steep 4 minutes. Break crust and skim foam.</p>
+    </div>
+
+    <div id="reviews" class="tab-content">
+      <div style="display:flex; gap:2rem; flex-wrap:wrap;">
+        <div style="flex:1;">
+          <div style="font-size:3rem; color:#C6A06C;">4.7 ★</div>
+          <p>Based on 147 reviews</p>
+        </div>
+        <div style="flex:2;">
+          <div><i class="fas fa-star" style="color:#C6A06C;"></i> 5 ★ <span style="color:#9E968D;">(112 reviews)</span></div>
+          <div><i class="fas fa-star" style="color:#C6A06C;"></i> 4 ★ <span style="color:#9E968D;">(28 reviews)</span></div>
+          <div><i class="fas fa-star" style="color:#C6A06C;"></i> 3 ★ <span style="color:#9E968D;">(5 reviews)</span></div>
+          <div><i class="fas fa-star" style="color:#C6A06C;"></i> 2 ★ <span style="color:#9E968D;">(2 reviews)</span></div>
+        </div>
+      </div>
+      <div style="margin-top:2rem; padding:1rem; background:#12100E;">
+        <p><strong>James P.</strong> <span style="color:#C6A06C;">★★★★★</span></p>
+        <p style="color:#9E968D;">"Exceptional quality and flavor complexity. Highly recommended."</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="related-section">
+    <h2 class="related-title">You May Also Like</h2>
+    <div class="related-grid" id="relatedGrid"></div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.3rem;">NOIR</h4>
+        <p>Coffee Atelier</p>
+        <p>Since 1994</p>
+      </div>
+      <div class="footer-col">
+        <h4>EXPLORE</h4>
+        <p>Coffee</p>
+        <p>Equipment</p>
+        <p>Subscriptions</p>
+        <p>Atelier Visits</p>
+      </div>
+      <div class="footer-col">
+        <h4>CONTACT</h4>
+        <p>hello@noir.com</p>
+        <p>+32 (0)2 555 0890</p>
+        <p>Brussels · Tokyo · NYC</p>
+      </div>
+      <div class="footer-col">
+        <h4>FOLLOW</h4>
+        <div style="display: flex; gap: 1rem;">
+          <i class="fab fa-instagram"></i>
+          <i class="fab fa-twitter"></i>
+          <i class="fab fa-facebook-f"></i>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast">✓ Added to cart</div>
+
+  <script>
+    // Complete product database (same as shop.html)
+    const allProducts = [
+      { id: 1, name: "Yirgacheffe G1", price: 48, priceStr: "$48", category: "Single Origin", process: "Washed", roast: "Light", img: "https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?auto=compress&cs=tinysrgb&w=800", desc: "Jasmine, bergamot, honey. Washed process. Altitude: 1900-2100m" },
+      { id: 2, name: "Geisha 2024", price: 128, priceStr: "$128", category: "Limited", process: "Natural", roast: "Light", img: "https://images.pexels.com/photos/20011903/pexels-photo-20011903.jpeg?auto=compress&cs=tinysrgb&w=800", desc: "Tropical fruit, jasmine, silky. Limited release 2024 crop." },
+      { id: 3, name: "Aged Sumatra", price: 68, priceStr: "$68", category: "Single Origin", process: "Barrel-Aged", roast: "Dark", img: "https://images.pexels.com/photos/2396220/pexels-photo-2396220.jpeg?auto=compress&cs=tinysrgb&w=800", desc: "Earthy, dark chocolate, tobacco. 5-year aged green beans." },
+      { id: 4, name: "Ethiopia Guji", price: 52, priceStr: "$52", category: "Single Origin", process: "Natural", roast: "Medium", img: "https://images.pexels.com/photos/1691989/pexels-photo-1691989.jpeg?auto=compress&cs=tinysrgb&w=800", desc: "Blueberry, dark chocolate, winey. Organic farm." },
+      { id: 5, name: "Noir Signature Blend", price: 45, priceStr: "$45", category: "Blend", process: "Honey", roast: "Medium", img: "https://images.pexels.com/photos/8488379/pexels-photo-8488379.jpeg?auto=compress&cs=tinysrgb&w=800", desc: "Caramel, hazelnut, cocoa. Master Roaster's daily driver." },
+      { id: 6, name: "Oak Barrel Reserve", price: 98, priceStr: "$98", category: "Limited", process: "Barrel-Aged", roast: "Dark", img: "https://images.pexels.com/photos/29849772/pexels-photo-29849772.jpeg?auto=compress&cs=tinysrgb&w=800", desc: "Whiskey barrel notes, vanilla, oak. 45-day fermentation." },
+      { id: 7, name: "Decaf Swiss Water", price: 42, priceStr: "$42", category: "Decaf", process: "Washed", roast: "Medium", img: "https://images.pexels.com/photos/2396220/pexels-photo-2396220.jpeg?auto=compress&cs=tinysrgb&w=800", desc: "Cherry, almond, smooth. 99.9% caffeine-free." },
+      { id: 8, name: "Costa Rica Tarrazu", price: 56, priceStr: "$56", category: "Single Origin", process: "Honey", roast: "Light", img: "https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?auto=compress&cs=tinysrgb&w=800", desc: "Citrus, honey, graham cracker. Microlot." },
+      { id: 9, name: "Midnight Espresso", price: 38, priceStr: "$38", category: "Blend", process: "Natural", roast: "Dark", img: "https://images.pexels.com/photos/20011903/pexels-photo-20011903.jpeg?auto=compress&cs=tinysrgb&w=800", desc: "Dark chocolate, toasted nuts, full body." }
+    ];
+
+    // Get product from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+    let currentProduct = null;
+
+    if (productId) {
+      currentProduct = allProducts.find(p => p.id == productId);
+    }
+
+    if (!currentProduct) {
+      currentProduct = allProducts[1]; // Default to Geisha
+    }
+
+    // Helper to build product URL
+    function getProductUrl(product) {
+      return `product.html?id=${product.id}&name=${encodeURIComponent(product.name)}&price=${product.priceStr}&category=${encodeURIComponent(product.category)}&process=${encodeURIComponent(product.process)}&roast=${encodeURIComponent(product.roast)}&img=${encodeURIComponent(product.img)}&desc=${encodeURIComponent(product.desc)}`;
+    }
+
+    // Load product data into page
+    function loadProductData() {
+      document.title = `NOIR | ${currentProduct.name} — Premium Coffee`;
+      document.getElementById('breadcrumbProductName').innerText = currentProduct.name;
+      document.getElementById('productTitle').innerText = currentProduct.name;
+      document.getElementById('currentPrice').innerText = currentProduct.priceStr;
+      document.getElementById('productDesc').innerText = currentProduct.desc;
+      document.getElementById('detailsDesc').innerHTML = `${currentProduct.desc} This exceptional coffee is sourced from high-altitude farms and roasted to perfection by our master roasters.`;
+      
+      const mainImg = document.getElementById('mainImage');
+      mainImg.src = currentProduct.img;
+      mainImg.alt = currentProduct.name;
+      
+      const thumb1 = document.querySelector('.thumbnail:first-child');
+      if (thumb1) {
+        thumb1.dataset.img = currentProduct.img;
+        thumb1.src = currentProduct.img.replace('w=800', 'w=200');
+      }
+      
+      // Update specs table
+      const specsTable = document.getElementById('specsTable');
+      specsTable.innerHTML = `
+        <tr><td>Origin</td><td>${currentProduct.name.includes('Geisha') ? 'Panama · Boquete' : currentProduct.name.includes('Yirgacheffe') ? 'Ethiopia · Yirgacheffe' : 'Various Origins'}</td></tr>
+        <tr><td>Process</td><td>${currentProduct.process}</td></tr>
+        <tr><td>Roast Level</td><td>${currentProduct.roast}</td></tr>
+        <tr><td>Category</td><td>${currentProduct.category}</td></tr>
+        <tr><td>Varietal</td><td>${currentProduct.name.includes('Geisha') ? 'Geisha' : 'Heirloom / Bourbon'}</td></tr>
+      `;
+      
+      // Price discount calculation
+      const basePrice = currentProduct.price;
+      let originalPrice = Math.round(basePrice * 1.3);
+      let discount = Math.round((1 - basePrice / originalPrice) * 100);
+      document.getElementById('originalPrice').innerText = `$${originalPrice}.00`;
+      document.getElementById('discountBadge').innerText = `-${discount}%`;
+    }
+
+    // Render related products (exclude current product)
+    function renderRelatedProducts() {
+      const relatedGrid = document.getElementById('relatedGrid');
+      const related = allProducts.filter(p => p.id !== currentProduct.id).slice(0, 4);
+      
+      relatedGrid.innerHTML = related.map(product => `
+        <a href="${getProductUrl(product)}" class="related-card">
+          <img class="related-img" src="${product.img}" alt="${product.name}" loading="lazy">
+          <div class="related-info">
+            <div class="related-name">${product.name}</div>
+            <div class="related-price">${product.priceStr}</div>
+          </div>
+        </a>
+      `).join('');
+    }
+
+    // Initialize page
+    loadProductData();
+    renderRelatedProducts();
+
+    // Loader
+    setTimeout(() => {
+      const loader = document.getElementById('loader');
+      if (loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.style.display = 'none', 800);
+      }
+    }, 800);
+
+    // Cursor
+    if (window.matchMedia("(pointer: fine)").matches) {
+      const cursor = document.getElementById('cursor');
+      const cursorDot = document.getElementById('cursorDot');
+      if (cursor && cursorDot) {
+        document.addEventListener('mousemove', (e) => {
+          cursor.style.left = e.clientX + 'px';
+          cursor.style.top = e.clientY + 'px';
+          cursorDot.style.left = e.clientX + 'px';
+          cursorDot.style.top = e.clientY + 'px';
+        });
+      }
+    } else {
+      const cursorEl = document.getElementById('cursor');
+      const cursorDotEl = document.getElementById('cursorDot');
+      if (cursorEl) cursorEl.style.display = 'none';
+      if (cursorDotEl) cursorDotEl.style.display = 'none';
+    }
+
+    // Navbar scroll
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) navbar.classList.add('scrolled');
+      else navbar.classList.remove('scrolled');
+    });
+
+    // Side Menu
+    const hamburger = document.getElementById('hamburgerBtn');
+    const sideMenu = document.getElementById('sideMenu');
+    const overlay = document.getElementById('menuOverlay');
+
+    function openMenu() {
+      sideMenu.classList.add('open');
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      hamburger.classList.add('active');
+    }
+
+    function closeMenu() {
+      sideMenu.classList.remove('open');
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+      hamburger.classList.remove('active');
+    }
+
+    function toggleMenu() {
+      if (sideMenu.classList.contains('open')) closeMenu();
+      else openMenu();
+    }
+
+    if (hamburger) hamburger.addEventListener('click', toggleMenu);
+    if (overlay) overlay.addEventListener('click', closeMenu);
+    document.querySelectorAll('.side-menu-links a').forEach(link => {
+      link.addEventListener('click', () => closeMenu());
+    });
+
+    // Thumbnail gallery
+    const mainImage = document.getElementById('mainImage');
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    thumbnails.forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        mainImage.src = thumb.dataset.img;
+        thumbnails.forEach(t => t.classList.remove('active'));
+        thumb.classList.add('active');
+      });
+    });
+
+    // Size variant
+    const sizeBtns = document.querySelectorAll('.size-btn');
+    const currentPriceSpan = document.querySelector('.current-price');
+    sizeBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        sizeBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const price = btn.dataset.price;
+        currentPriceSpan.innerText = `$${price}.00`;
+      });
+    });
+
+    // Quantity
+    const qtyInput = document.getElementById('quantity');
+    let qty = 1;
+    document.getElementById('decrement').addEventListener('click', () => { if (qty > 1) { qty--; qtyInput.value = qty; } });
+    document.getElementById('increment').addEventListener('click', () => { if (qty < 10) { qty++; qtyInput.value = qty; } });
+
+    // Toast
+    const toast = document.getElementById('toast');
+    function showToast(msg) {
+      toast.innerText = msg;
+      toast.style.opacity = '1';
+      setTimeout(() => toast.style.opacity = '0', 2000);
+    }
+
+    document.getElementById('addToCartBtn').addEventListener('click', () => showToast(`✓ ${currentProduct.name} added to cart`));
+    document.getElementById('buyNowBtn').addEventListener('click', () => showToast('🚀 Redirecting to checkout...'));
+
+    // Tabs
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tabId = btn.dataset.tab;
+        tabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        tabContents.forEach(content => content.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+      });
+    });
+
+    // GSAP
+    gsap.from('.product-gallery', { opacity: 0, x: -40, duration: 0.8 });
+    gsap.from('.product-info', { opacity: 0, x: 40, duration: 0.8 });
+    gsap.from('.related-card', { scrollTrigger: { trigger: '.related-section', start: 'top 85%' }, y: 30, opacity: 0, stagger: 0.1 });
+  </script>
+</body>
+
+</html>
